@@ -1,0 +1,5 @@
+setDevEnv.sh
+venv/
+node_modules/
+.serverless/
+*pycache*

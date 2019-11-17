@@ -1,0 +1,46 @@
+# serverless.yml
+
+service: serverless-flask
+
+plugins:
+  - serverless-python-requirements
+  - serverless-wsgi
+  - serverless-domain-manager
+
+custom:
+  wsgi:
+    app: manage.app
+    packRequirements: false
+  pythonRequirements:
+    dockerizePip: false
+  customDomain:
+    domainName: strava-heatmap.nicholas-gonzalez.com
+    basePath: api
+    stage: ${self:provider.stage}
+    createRoute53Record: true
+
+provider:
+  name: aws
+  runtime: python3.7
+  stage: prod
+  region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:us-east-1:*"
+
+functions:
+  app:
+    handler: wsgi.handler
+    environment:
+      STRAVA_CLIENT_SECRET_KEY: ${env:STRAVA_CLIENT_SECRET_KEY}
+      STRAVA_BACKEND_ENV: prod
+    events:
+      - http: ANY /
+      - http: 'ANY {proxy+}'
