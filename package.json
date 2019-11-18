@@ -1,0 +1,25 @@
+{
+  "name": "stravapicturebackend",
+  "version": "1.0.0",
+  "description": "The backend api for building strava heatmaps",
+  "main": "index.js",
+  "dependencies": {
+    "serverless-wsgi": "^1.7.3",
+    "serverless-python-requirements": "^5.0.1",
+    "serverless-domain-manager": "^3.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngonzo95/stravaPictureBackend.git"
+  },
+  "author": "ngonzo95@gmail.com",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ngonzo95/stravaPictureBackend/issues"
+  },
+  "homepage": "https://github.com/ngonzo95/stravaPictureBackend#readme"
+}
