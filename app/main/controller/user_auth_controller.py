@@ -1,5 +1,5 @@
-from flask import (request, Flask)
-from flask_restplus import (Resource, Namespace)
+
+from flask_restplus import (Resource)
 from app.main.service.user_auth_service import getAllUserAuths
 from app.main.response.user_auth_response import UserAuthResponse
 api = UserAuthResponse.api

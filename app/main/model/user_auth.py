@@ -1,8 +1,8 @@
 class UserAuth():
     def __init__(self, *initial_data, **kwargs):
         self._availableKeys = ['id', 'strava_athlete_id', 'strava_username',
-                         'strava_auth_token', 'strava_refresh_token',
-                         'strava_expiration_time']
+                               'strava_auth_token', 'strava_refresh_token',
+                               'strava_expiration_time']
 
         for dictionary in initial_data:
             for key in dictionary:
