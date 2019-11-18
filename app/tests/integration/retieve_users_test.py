@@ -49,7 +49,6 @@ def test_client():
     # Establish an application context before running the tests.
     ctx = flask_app.app_context()
     ctx.push()
-    dynamo.create_all()
 
     yield testing_client  # this is where the testing happens!
 
