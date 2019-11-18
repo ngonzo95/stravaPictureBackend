@@ -15,7 +15,7 @@ custom:
     dockerizePip: false
   customDomain:
     domainName: strava-heatmap.nicholas-gonzalez.com
-    basePath: api
+    basePath: ''
     stage: ${self:provider.stage}
     createRoute53Record: true
 
@@ -34,6 +34,14 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-east-1:*"
+
+    - Effect: Allow
+      Action:
+        - logs:CreateLogGroup
+        - logs:CreateLogStream
+        - logs:PutLogEvents
+        - logs:DescribeLogStreams
+      Resource: "arn:aws:logs:*:*:*"
 
 functions:
   app:
