@@ -6,6 +6,7 @@ from app.main.service.user_auth_service import (getAllUserAuths,
                                                 setUserAuth)
 
 from app.main.response.user_auth_response import UserAuthResponse
+from werkzeug.exceptions import Unauthorized
 
 api = UserAuthResponse.api
 _userResponseType = UserAuthResponse.user
@@ -38,7 +39,13 @@ class SetStravaToken(Resource):
         """puts user auth information into dynamo"""
         parser = reqparse.RequestParser()
         parser.add_argument('code')
+        parser.add_argument('scope')
         args = parser.parse_args()
-        setUserAuth(id, args)
-        return {"message": "Successfully set user information please go"
-                + "back to the heatmap"}
+
+        if "activity:read" in args["scope"]:
+            setUserAuth(id, args)
+            return {"message": "Successfully set user information please go"
+                    + "back to the heatmap"}
+        else:
+            raise Unauthorized("Please enable the activity read ability, the "
+                               + "app wont work without it")

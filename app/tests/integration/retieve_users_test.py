@@ -45,7 +45,7 @@ def test_when_user_signs_in_redirects_to_strava_auth(test_client):
     # assert request.path == url_for(url)
 
 
-def test_set_strava_token_calls_strava_api_and_sets_token(test_client):
+def test_exchange_token_calls_strava_api_and_sets_token(test_client):
     user = buildUserAuth()
     usersForDbToDelete.append(user)
 
@@ -76,6 +76,27 @@ def test_set_strava_token_calls_strava_api_and_sets_token(test_client):
         user = UserAuth(dbRes['Item'])
         assert user == UserAuth(dbRes['Item'])
 
+
+def test_exchange_token_with_bad_scope_returns_error(test_client):
+    user = buildUserAuth()
+    usersForDbToDelete.append(user)
+
+    with requests_mock.Mocker() as m:
+        athleteCode = "asdfasdfds"
+        stravaUrl = 'https://www.strava.com/oauth/token'
+        stravaUrlParmas = '?client_id=TESTCLIENTID&client_secret=TESTSECRET' \
+            + '&code=' + athleteCode + '&grant_type=authorization_code'
+        m.post(stravaUrl + stravaUrlParmas, text="{}")
+
+        reqUrl = 'user/' + user.id + '/auth/exchange_token?state=&code=' \
+            + athleteCode + '&scope=read'
+
+        response = test_client.get(reqUrl)
+        assert response.status_code == 401
+
+        tableName = current_app.config['TABLE_NAMES']['USER_AUTH_TABLE']
+        dbRes = dynamo.get_table(tableName).get_item(Key={'id': user.id})
+        assert 'Item' not in dbRes
 
 def generate_user():
     user = buildUserAuth()

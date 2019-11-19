@@ -16,13 +16,9 @@ def getAllUserAuths():
 
 def setUserAuth(id, args):
     stravaAuthJson = _getStravaAuth(args["code"])
-    user = UserAuth(id=id)
-    user.strava_athlete_id = stravaAuthJson["athlete"]["id"]
-    user.strava_username = stravaAuthJson["athlete"]["username"]
-    user.strava_auth_token = stravaAuthJson["access_token"]
-    user.strava_refresh_token = stravaAuthJson["refresh_token"]
-    user.strava_expiration_time = stravaAuthJson["expires_at"]
-    userAuthTable().put_item(Item=user.generateDict())
+    userAuth = UserAuth(id=id)
+    _updateUserAuthWithStravaJson(userAuth, stravaAuthJson)
+    userAuthTable().put_item(Item=userAuth.generateDict())
 
 
 def generateStravaAuthUrl(id):
@@ -34,6 +30,7 @@ def generateStravaAuthUrl(id):
         + "exchange_token&approval_prompt=force&scope=read,activity:read"
     return url
 
+
 def _getStravaAuth(code):
     url = "https://www.strava.com/oauth/token"
     url += '?client_id=' + current_app.config['STRAVA_CLIENT_KEY']
@@ -41,6 +38,16 @@ def _getStravaAuth(code):
     url += '&code=' + code
     url += '&grant_type=authorization_code'
     return requests.post(url).json()
+
+
+def _updateUserAuthWithStravaJson(userAuth, stravaAuthJson):
+    userAuth.strava_athlete_id = stravaAuthJson["athlete"]["id"]
+    userAuth.strava_username = stravaAuthJson["athlete"]["username"]
+    userAuth.strava_auth_token = stravaAuthJson["access_token"]
+    userAuth.strava_refresh_token = stravaAuthJson["refresh_token"]
+    userAuth.strava_expiration_time = stravaAuthJson["expires_at"]
+    return userAuth
+
 
 def userAuthTable():
     tableName = current_app.config['TABLE_NAMES']['USER_AUTH_TABLE']
