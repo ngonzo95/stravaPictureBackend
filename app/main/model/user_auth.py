@@ -17,3 +17,9 @@ class UserAuth():
         for key in self._availableKeys:
             d[key] = getattr(self, key)
         return d
+
+    def __eq__(self, other):
+        for key in self._availableKeys:
+            if not getattr(self, key) == getattr(other, key):
+                return False
+        return True

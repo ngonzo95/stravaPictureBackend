@@ -32,6 +32,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     TABLE_NAMES = generateTableNames('dev')
     DYNAMO_TABLES = initTable(TABLE_NAMES)
+    BASE_URL = "http://localhost:5000/"
 
 
 class TestingConfig(Config):
@@ -39,13 +40,15 @@ class TestingConfig(Config):
     TESTING = True
     TABLE_NAMES = generateTableNames('test')
     DYNAMO_TABLES = initTable(TABLE_NAMES)
+    BASE_URL = "http://testurl/"
+    STRAVA_CLIENT_KEY = 'TESTCLIENTID'
+    STRAVA_CLIENT_SECRET_KEY = 'TESTSECRET'
 
 
 class ProductionConfig(Config):
     DEBUG = False
     TABLE_NAMES = generateTableNames('prod')
     DYNAMO_TABLES = initTable(TABLE_NAMES)
-
 
 
 config_by_name = dict(
