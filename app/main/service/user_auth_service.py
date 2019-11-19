@@ -30,8 +30,8 @@ def generateStravaAuthUrl(id):
         + current_app.config['STRAVA_CLIENT_KEY'] \
         + "&response_type=code&redirect_uri=" \
         + current_app.config['BASE_URL'] \
-        + "user/" + id + "/auth/set_strava_token/"\
-        + "exchange_token&approval_prompt=force&scope=read"
+        + "user/" + id + "/auth/"\
+        + "exchange_token&approval_prompt=force&scope=read,activity:read"
     return url
 
 def _getStravaAuth(code):

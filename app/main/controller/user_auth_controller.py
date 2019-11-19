@@ -30,7 +30,7 @@ class GetStravaToken(Resource):
         return redirect(generateStravaAuthUrl(id), code=302)
 
 
-@api.route('/<id>/auth/set_strava_token')
+@api.route('/<id>/auth/exchange_token')
 @api.doc(params={'id': 'The users heatmap id'})
 class SetStravaToken(Resource):
     @api.doc('A url used for updating users auth information')

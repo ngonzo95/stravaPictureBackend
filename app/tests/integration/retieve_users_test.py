@@ -35,8 +35,8 @@ def test_when_user_signs_in_redirects_to_strava_auth(test_client):
     url = "http://www.strava.com/oauth/authorize?client_id=" \
         + current_app.config['STRAVA_CLIENT_KEY'] \
         + "&response_type=code&redirect_uri=" \
-        + "http://testurl/user/" + userId + "/auth/set_strava_token/"\
-        + "exchange_token&approval_prompt=force&scope=read"
+        + "http://testurl/user/" + userId + "/auth/"\
+        + "exchange_token&approval_prompt=force&scope=read,activity:read"
 
     # check that the path changed
     assert response.status_code == 302
@@ -65,7 +65,7 @@ def test_set_strava_token_calls_strava_api_and_sets_token(test_client):
             + '&code=' + athleteCode + '&grant_type=authorization_code'
         m.post(stravaUrl + stravaUrlParmas, text=json.dumps(strava_response))
 
-        reqUrl = 'user/' + user.id + '/auth/set_strava_token?state=&code=' \
+        reqUrl = 'user/' + user.id + '/auth/exchange_token?state=&code=' \
             + athleteCode + '&scope=read,activity:read'
 
         response = test_client.get(reqUrl)
