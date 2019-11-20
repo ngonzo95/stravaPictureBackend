@@ -11,23 +11,6 @@ from botocore.exceptions import ClientError
 usersForDbToDelete = []
 
 
-def test_example(test_client):
-    # arrange
-    user = generate_user()
-
-    # act
-    response = test_client.get('/user')
-
-    # assert
-    assert response.status_code == 200
-    expected = {'data':
-                [{'id': user.id,
-                  'strava_athlete_id': user.strava_athlete_id,
-                  'strava_expiration_time': user.strava_expiration_time,
-                  'strava_username': user.strava_username}]}
-    assert response.json == expected
-
-
 def test_when_user_signs_in_redirects_to_strava_auth(test_client):
     userId = "35324d"
     response = test_client.get(
@@ -98,14 +81,14 @@ def test_exchange_token_with_bad_scope_returns_error(test_client):
         dbRes = dynamo.get_table(tableName).get_item(Key={'id': user.id})
         assert 'Item' not in dbRes
 
-def generate_user():
-    user = buildUserAuth()
-    usersForDbToDelete.append(user)
-
-    tableName = current_app.config['TABLE_NAMES']['USER_AUTH_TABLE']
-    dynamo.get_table(tableName).put_item(
-        Item=user.generateDict())
-    return user
+# def generate_user():
+#     user = buildUserAuth()
+#     usersForDbToDelete.append(user)
+#
+#     tableName = current_app.config['TABLE_NAMES']['USER_AUTH_TABLE']
+#     dynamo.get_table(tableName).put_item(
+#         Item=user.generateDict())
+#     return user
 
 
 @pytest.fixture(scope='module')

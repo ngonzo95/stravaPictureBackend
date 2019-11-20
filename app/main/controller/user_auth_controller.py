@@ -1,24 +1,24 @@
 
 from flask_restplus import (Resource, reqparse)
 from flask import redirect
-from app.main.service.user_auth_service import (getAllUserAuths,
-                                                generateStravaAuthUrl,
+from app.main.service.user_auth_service import (generateStravaAuthUrl,
                                                 setUserAuth)
 
-from app.main.response.user_auth_response import UserAuthResponse
+from app.main.response.user_response import UserAuthResponse
 from werkzeug.exceptions import Unauthorized
 
 api = UserAuthResponse.api
 _userResponseType = UserAuthResponse.user
 
 
-@api.route('')
+@api.route('/<id>')
+@api.doc(params={'id': 'The users heatmap id'})
 class UserList(Resource):
-    @api.doc('List of all users')
-    @api.marshal_list_with(_userResponseType, envelope='data')
+    @api.doc('Returns the base map of the user')
+    @api.marshal_with(_userResponseType)
     def get(self):
-        """List all registered users"""
-        return getAllUserAuths()
+        """Returns the specified user"""
+        pass
 
 
 @api.route('/<id>/auth/get_strava_token')
