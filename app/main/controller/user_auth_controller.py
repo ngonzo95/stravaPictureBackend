@@ -1,14 +1,14 @@
 
 from flask_restplus import (Resource, reqparse)
 from flask import redirect
-from app.main.service.user_auth_service import (generateStravaAuthUrl,
-                                                setUserAuth)
+import app.main.service.user_auth_service as user_auth_service
+import app.main.service.user_service as user_service
 
-from app.main.response.user_response import UserAuthResponse
+from app.main.response.user_response import UserResponse
 from werkzeug.exceptions import Unauthorized
 
-api = UserAuthResponse.api
-_userResponseType = UserAuthResponse.user
+api = UserResponse.api
+_userResponseType = UserResponse.user
 
 
 @api.route('/<id>')
@@ -16,9 +16,9 @@ _userResponseType = UserAuthResponse.user
 class UserList(Resource):
     @api.doc('Returns the base map of the user')
     @api.marshal_with(_userResponseType)
-    def get(self):
+    def get(self, id):
         """Returns the specified user"""
-        pass
+        return user_service.getUserById(id)
 
 
 @api.route('/<id>/auth/get_strava_token')
@@ -28,7 +28,7 @@ class GetStravaToken(Resource):
     def get(self, id):
         """Redirects user to strava so that the user can approve the app"""
 
-        return redirect(generateStravaAuthUrl(id), code=302)
+        return redirect(user_auth_service.generateStravaAuthUrl(id), code=302)
 
 
 @api.route('/<id>/auth/exchange_token')
@@ -43,7 +43,7 @@ class SetStravaToken(Resource):
         args = parser.parse_args()
 
         if "activity:read" in args["scope"]:
-            setUserAuth(id, args)
+            user_auth_service.setUserAuth(id, args)
             return {"message": "Successfully set user information please go"
                     + "back to the heatmap"}
         else:

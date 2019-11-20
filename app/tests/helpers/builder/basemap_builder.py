@@ -1,17 +1,16 @@
 from app.main.model.basemap import Basemap
 from app.tests.helpers.builder.marker_builder import buildMarker
-import random
-import string
+import app.tests.helpers.util.random_utils as random_utils
 
 
 def buildBasemap(*overridenValues):
     data = {
-        "center": 3,
-        "cord": [39.8333, -98.58333],
+        "zoom": random_utils.randint(1, 12),
+        "center": random_utils.randomCord(),
         "markers": []
     }
 
-    for i in range(random.randint(1, 5)):
+    for i in range(random_utils.randint(1, 5)):
         data["markers"].append(buildMarker())
 
     if not overridenValues:
@@ -21,7 +20,3 @@ def buildBasemap(*overridenValues):
         data[key] = value
 
     return Basemap(data)
-
-
-def randomString(n):
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))

@@ -4,9 +4,9 @@ from app.main.model.marker import Marker
 
 class Basemap():
     def __init__(self, *initial_data, **kwargs):
-        self._availableKeys = ["center", "cord", "markers"]
+        self._availableKeys = ["center", "zoom", "markers"]
         self.center = None
-        self.cord = None
+        self.zoom = None
         self.markers = []
 
         model_helper.initHelper(self, self._availableKeys,

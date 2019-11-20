@@ -1,13 +1,12 @@
 from app.main.model.marker import Marker
-import random
-import string
+import app.tests.helpers.util.random_utils as random_utils
 
 
 def buildMarker(*overridenValues):
     data = {
-        "mapId": randomString(10),
-        "text":  randomString(14),
-        "cord": [random.random()*360-180, random.random()*360-180]
+        "mapId": random_utils.randomString(10),
+        "text":  random_utils.randomString(14),
+        "cord": random_utils.randomCord()
     }
 
     if not overridenValues:
@@ -17,7 +16,3 @@ def buildMarker(*overridenValues):
         data[key] = value
 
     return Marker(data)
-
-
-def randomString(n):
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))

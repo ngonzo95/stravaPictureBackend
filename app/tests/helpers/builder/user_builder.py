@@ -1,13 +1,12 @@
 from app.main.model.user import User
 from app.tests.helpers.builder.basemap_builder import buildBasemap
-import random
-import string
+import app.tests.helpers.util.random_utils as random_utils
 
 
 def buildUser(*overridenValues):
     data = {
-        "id": random.randint(0, 1000),
-        "email": randomString(13),
+        "id": str(random_utils.randint(0, 1000)),
+        "email": random_utils.randomString(13),
         "basemap": buildBasemap(),
         "is_admin": False
     }
@@ -19,7 +18,3 @@ def buildUser(*overridenValues):
         data[key] = value
 
     return User(data)
-
-
-def randomString(n):
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=n))

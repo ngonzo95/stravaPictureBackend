@@ -1,6 +1,7 @@
 from app.tests.helpers.builder.user_builder import buildUser
 from app.main.model.user import User
 
+
 def test_user_generation_from_and_to_dict_works():
     user = buildUser()
     expectedUserDict = {
@@ -9,7 +10,7 @@ def test_user_generation_from_and_to_dict_works():
         "is_admin": user.is_admin,
         "basemap": {
             "center": user.basemap.center,
-            "cord": user.basemap.cord,
+            "zoom": user.basemap.zoom,
             "markers": []
         }
     }
