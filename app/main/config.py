@@ -19,7 +19,14 @@ def initTable(tableNames):
                  dict(AttributeName='id', AttributeType='S')],
              ProvisionedThroughput=dict(
                  ReadCapacityUnits=5, WriteCapacityUnits=5)
-             )
+             ),
+        dict(TableName=tableNames['RUN_MAP_TABLE'],
+             KeySchema=[dict(AttributeName='id', KeyType='HASH')],
+             AttributeDefinitions=[
+            dict(AttributeName='id', AttributeType='S')],
+            ProvisionedThroughput=dict(
+            ReadCapacityUnits=5, WriteCapacityUnits=5)
+        )
     ]
 
 
@@ -27,6 +34,7 @@ def generateTableNames(suffix):
     tableNames = {}
     tableNames['USER_AUTH_TABLE'] = "user_auth_" + suffix
     tableNames['USER_TABLE'] = "user_" + suffix
+    tableNames['RUN_MAP_TABLE'] = "run_map_" + suffix
 
     return tableNames
 

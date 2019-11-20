@@ -1,8 +1,8 @@
-from flask_restplus import fields, Namespace
-
+from flask_restplus import fields
+from app.main.controller.rest_plus_api import Api
 
 class UserResponse:
-    api = Namespace('user', description='user related operations')
+    api = Api.api
     marker = api.model('marker', {
         'mapId': fields.String(required=True, description='map id'),
         'text': fields.String(required=True, description='text to display to the user'),

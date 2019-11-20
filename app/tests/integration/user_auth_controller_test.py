@@ -9,7 +9,6 @@ from app.main.model.user import User
 import requests_mock
 import json
 from botocore.exceptions import ClientError
-from decimal import Decimal
 
 usersAuthForDbToDelete = []
 usersForDbToDelete = []
@@ -63,6 +62,11 @@ def test_exchange_token_calls_strava_api_and_sets_token(test_client):
         userAuth = UserAuth(dbRes['Item'])
         assert userAuth == UserAuth(dbRes['Item'])
 
+    # Ensure that a user entry has been created
+    userTableName = current_app.config['TABLE_NAMES']['USER_TABLE']
+    userRes = dynamo.get_table(userTableName).get_item(Key={'id': userAuth.id})
+    assert User(id=userAuth.id).generateDict() == userRes['Item']
+
 
 def test_exchange_token_with_bad_scope_returns_error(test_client):
     userAuth = buildUserAuth()
@@ -84,23 +88,6 @@ def test_exchange_token_with_bad_scope_returns_error(test_client):
         tableName = current_app.config['TABLE_NAMES']['USER_AUTH_TABLE']
         dbRes = dynamo.get_table(tableName).get_item(Key={'id': userAuth.id})
         assert 'Item' not in dbRes
-
-
-def test_retieve_user_gets_the_desired_user(test_client):
-    # arrange
-    user = generate_user()
-
-    # act
-    response = test_client.get('/user/' + user.id)
-
-    # assert
-    assert response.status_code == 200
-    # asserting indivual things about responses because decimals are a pain
-    assert response.json['email'] == user.email
-    assert response.json['id'] == user.id
-    assert response.json['basemap']['zoom'] == user.basemap.zoom
-    assert response.json['basemap']['markers'][0]['mapId'] \
-        == user.basemap.markers[0].mapId
 
 
 def generate_auth_user():
