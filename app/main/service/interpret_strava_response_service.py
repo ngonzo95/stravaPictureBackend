@@ -1,4 +1,7 @@
 from app.main.model.run import Run
+from decimal import Decimal
+
+ROUNDING_RESOLUTION = Decimal('.000000001')
 
 
 def extract_ids_of_interest_from_activity_list(resJson):
@@ -11,9 +14,11 @@ def extract_ids_of_interest_from_activity_list(resJson):
 
 
 def create_run_from_detailed_activity(userId, activity):
-    dictOfInterest = {'id': activity['id'], 'userId': userId,
+    start = [Decimal(activity['start_latlng'][0]).quantize(ROUNDING_RESOLUTION),
+             Decimal(activity['start_latlng'][1]).quantize(ROUNDING_RESOLUTION)]
+    dictOfInterest = {'id': str(activity['id']), 'userId': str(userId),
                       'polyline': activity['map']['polyline'],
-                      'start': activity['start_latlng'],
+                      'start': start,
                       'name': activity['name'],
                       'type': activity['type']
                       }
