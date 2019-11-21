@@ -14,6 +14,15 @@ def getAllUserAuths():
     return users
 
 
+def getUserAuthById(id):
+    dbResponse = userAuthTable().get_item(Key={'id': id})["Item"]
+    return UserAuth(dbResponse)
+
+
+def createUserAuth(userAuth):
+    userAuthTable().put_item(Item=userAuth.generateDict())
+
+
 def setUserAuth(id, args):
     stravaAuthJson = _getStravaAuth(args["code"])
     userAuth = UserAuth(id=id)
