@@ -2,56 +2,37 @@ import pytest
 from app.main import dynamo
 from flask import current_app
 from app.tests.helpers.test_app_builder import buildTestApp
-from app.tests.helpers.builder.run_map_builder import buildRunMap
+from app.tests.helpers.builder.run_builder import buildRun
 from botocore.exceptions import ClientError
 
 
-runMapForDbToDelete = []
+runForDbToDelete = []
 
 
-def test_retieve_run_map_with_id_gets_the_desired_user(test_client):
+def test_retieve_run_with_id_gets_the_desired_run(test_client):
     # arrange
-    runMap = generate_run_map()
+    run = generate_run()
 
     # act
     response = test_client.get(
-        '/user/' + runMap.userId + '/run_map/' + runMap.id)
+        '/user/' + run.userId + '/run/' + run.id)
 
     # assert
     assert response.status_code == 200
     # asserting indivual things about responses because decimals are a pain
-    assert runMap.id == response.json['id']
-    assert runMap.mapName == response.json['mapName']
+    assert run.id == response.json['id']
+    assert run.name == response.json['name']
+    assert run.polyline == response.json['polyline']
 
 
-def test_retieve_run_maps_gets_all_run_maps_for_the_user(test_client):
-    # arrange
-    runMaps = []
-    runMaps.append(generate_run_map({'userId': '42'}))
-    runMaps.append(generate_run_map({'userId': '42'}))
-    generate_run_map({'userId': '85'})
+def generate_run(initValues={}):
+    run = buildRun(initValues)
+    runForDbToDelete.append(run)
 
-    # act
-    response = test_client.get(
-        '/user/' + '42' + '/run_map')
-
-    # assert
-    assert response.status_code == 200
-    # asserting indivual things about responses because decimals are a pain
-    res = response.json
-    assert len(response.json) == 2
-    assert (runMaps[0].id == res[0]['id'] or runMaps[0].id == res[1]['id'])
-    assert (runMaps[1].id == res[1]['id'] or runMaps[1].id == res[0]['id'])
-
-
-def generate_run_map(initValues={}):
-    runMap = buildRunMap(initValues)
-    runMapForDbToDelete.append(runMap)
-
-    tableName = current_app.config['TABLE_NAMES']['RUN_MAP_TABLE']
+    tableName = current_app.config['TABLE_NAMES']['RUN_TABLE']
     dynamo.get_table(tableName).put_item(
-        Item=runMap.generateDict())
-    return runMap
+        Item=run.generateDict())
+    return run
 
 
 @pytest.fixture(scope='module')
@@ -77,8 +58,8 @@ def test_client():
 
 
 def cleanupRunMaps(exceptions):
-    tableName = current_app.config['TABLE_NAMES']['RUN_MAP_TABLE']
-    for runMap in runMapForDbToDelete:
+    tableName = current_app.config['TABLE_NAMES']['RUN_TABLE']
+    for runMap in runForDbToDelete:
         try:
             dynamo.get_table(tableName).delete_item(
                 Key={'id': runMap.id, 'userId': runMap.userId})
