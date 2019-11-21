@@ -4,12 +4,14 @@ import app.main.model.model_helper as model_helper
 
 class User():
     def __init__(self, *initial_data, **kwargs):
-        self._availableKeys = ["id", "email", "basemap", "is_admin"]
+        self._availableKeys = ["id", "email", "basemap", "is_admin",
+                               "last_update"]
 
         self.id = None
         self.email = None
         self.basemap = Basemap()
         self.is_admin = False
+        self.last_update = 0
 
         model_helper.initHelper(self, self._availableKeys,
                                 initial_data, kwargs)

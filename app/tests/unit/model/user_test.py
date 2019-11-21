@@ -8,6 +8,7 @@ def test_user_generation_from_and_to_dict_works():
         "id": user.id,
         "email": user.email,
         "is_admin": user.is_admin,
+        "last_update": user.last_update,
         "basemap": {
             "center": user.basemap.center,
             "zoom": user.basemap.zoom,

@@ -8,7 +8,8 @@ def buildUser(*overridenValues):
         "id": str(random_utils.randint(0, 1000)),
         "email": random_utils.randomString(13),
         "basemap": buildBasemap(),
-        "is_admin": False
+        "is_admin": False,
+        "last_update": random_utils.randint(0, 100000)
     }
 
     if not overridenValues:
