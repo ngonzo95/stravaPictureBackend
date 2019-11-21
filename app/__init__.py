@@ -6,6 +6,7 @@ import app.main.controller.user_auth_controller
 import app.main.controller.user_controller
 import app.main.controller.run_map_controller
 import app.main.controller.run_controller
+import app.main.controller.update_controller
 
 from app.main.controller.rest_plus_api import Api as UserApi
 
