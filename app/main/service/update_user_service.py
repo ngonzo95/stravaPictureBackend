@@ -6,8 +6,18 @@ import app.main.service.run_service as run_service
 
 def updateUser(userId):
     userAuth = user_auth_service.getUserAuthById(userId)
-    activities = strava_backend.list_activities(userAuth, 1)
-    ids = interpreter.extract_ids_of_interest_from_activity_list(activities)
+    ids = []
+
+    # Loop through all of the pages until we run out of pages
+    pageNum = 1
+    activities = strava_backend.list_activities(userAuth, pageNum)
+
+    while len(activities) == strava_backend.ACTIVITIES_PER_PAGE:
+        pageNum += 1
+        ids += interpreter.extract_ids_of_interest_from_activity_list(activities)
+        activities = strava_backend.list_activities(userAuth, pageNum)
+
+    ids += interpreter.extract_ids_of_interest_from_activity_list(activities)
 
     for id in ids:
         activity = strava_backend.get_activity_by_id(userAuth, id)

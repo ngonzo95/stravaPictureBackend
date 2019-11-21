@@ -13,7 +13,7 @@ def generate_mock_strava_api(runIds, numberOfNoiseActivities, mock):
     activityList = []
     activityListPage = 1
     for i in reversed(range(len(runIdsCopy) + numberOfNoiseActivities)):
-        noiseThreshold = 1.0 * (i - len(runIdsCopy)) / len(runIdsCopy)
+        noiseThreshold = 1.0 * (i - len(runIdsCopy)) / (len(runIdsCopy) + 1)
         isNoise = False
 
         idOfActivity = None
@@ -26,10 +26,9 @@ def generate_mock_strava_api(runIds, numberOfNoiseActivities, mock):
 
         generate_endpoint_for_activity(mock, idOfActivity)
         activityList.append(
-            (generate_summary_activity('Run', isNoise, id=idOfActivity)))
+            generate_summary_activity('Run', isNoise, id=idOfActivity))
         if len(activityList) == 30:
-            generate_endpoint_for_activity_list_page(
-                mock, activityListPage, activityList)
+            generate_endpoint_for_activity_list_page(mock, activityListPage, activityList)
             activityList = []
             activityListPage += 1
 
@@ -42,7 +41,7 @@ def generate_mock_strava_api(runIds, numberOfNoiseActivities, mock):
 
 def generate_endpoint_for_activity_list_page(mock, pageNumber, activities):
     stravaUrl = 'https://www.strava.com/api/v3/athlete/activities'
-    stravaUrl += '?page=1&per_page=30'
+    stravaUrl += '?page=' + str(pageNumber) + '&per_page=30'
     mock.get(stravaUrl, text=json.dumps(activities, cls=DecimalEncoder))
 
 

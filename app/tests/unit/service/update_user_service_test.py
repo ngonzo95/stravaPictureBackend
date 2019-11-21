@@ -27,7 +27,7 @@ def test_update_user_inserts_runs_into_db(test_client):
         runIds.append(id)
 
     with requests_mock.Mocker() as m:
-        strava_api.generate_mock_strava_api(runIds, 0, m)
+        strava_api.generate_mock_strava_api(runIds, 30, m)
         unit.updateUser(userAuth.id)
 
     dbResponse = run_service.runTable().query(
