@@ -8,4 +8,10 @@ def list_activities(userAuth, pageNumber, lastUpdate=None):
     if lastUpdate:
         urlParams += "&after=" + str(lastUpdate)
 
-    return requests.post(url+urlParams, headers=headers).json()
+    return requests.get(url+urlParams, headers=headers).json()
+
+
+def get_activity_by_id(userAuth, id):
+    url = "https://www.strava.com/api/v3/activities/" + str(id)
+    headers = {'Authorization': userAuth.strava_auth_token}
+    return requests.get(url, headers=headers).json()
