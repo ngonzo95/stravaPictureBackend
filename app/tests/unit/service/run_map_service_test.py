@@ -32,6 +32,44 @@ def test_get_run_map_by_user_returns_all_run_maps_for_user(test_client):
     assert sorted(runMaps) == sorted(unit.getRunMapByUser(userId))
 
 
+def test_add_run_maps_adds_runs_to_given_map(test_client):
+    runs = []
+    for i in range(5):
+        runs.append(random_utils.randomString(10))
+
+    runMap = generate_run_map({'runs': runs})
+
+    runsToAdd = []
+    for i in range(6):
+        runsToAdd.append(random_utils.randomString(10))
+
+    unit.addRunsToRunMap(runMap.id, runMap.userId, runsToAdd)
+    assert (runsToAdd + runs) == \
+        unit.getRunMapByIdAndUserId(runMap.id, runMap.userId).runs
+
+
+def test_add_runs_adds_runs_and_removes_runs_more_than_max():
+    runs = []
+    for i in range(25):
+        runs.append(random_utils.randomString(10))
+
+    runMap = generate_run_map({'runs': runs})
+
+    runsToAdd = []
+    for i in range(10):
+        runsToAdd.append(random_utils.randomString(10))
+
+    unit.addRunsToRunMap(runMap.id, runMap.userId, runsToAdd)
+
+    expectedRuns = []
+    expectedRuns += runsToAdd
+    for i in range(20):
+        expectedRuns.append(runs[i])
+
+    assert expectedRuns == \
+        unit.getRunMapByIdAndUserId(runMap.id, runMap.userId).runs
+
+
 def generate_run_map(init_values={}):
     runMap = buildRunMap(overridenValues=init_values)
     runMapForDbToDelete.append(runMap)
