@@ -8,7 +8,8 @@ def test_distance_between_two_points():
     cord2 = [Decimal(76.6543), Decimal(-95.3566)]
     expectedDistance = Distance(146.44140729201737)
 
-    assert expectedDistance == unit.calculate_distance(cord1, cord2)
+    difference = expectedDistance.km  - unit.calculate_distance(cord1, cord2).km
+    assert abs(difference) <= 0.0000
 
 
 def test_point_in_run_map_zone():
