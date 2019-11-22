@@ -7,6 +7,7 @@ def test_distance_between_two_points():
     cord1 = [Decimal(75.3425), Decimal(-95.300)]
     cord2 = [Decimal(76.6543), Decimal(-95.3566)]
     expectedDistance = Distance(146.44140729201737)
+
     assert expectedDistance == unit.calculate_distance(cord1, cord2)
 
 
