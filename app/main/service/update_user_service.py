@@ -4,6 +4,7 @@ import app.main.service.user_auth_service as user_auth_service
 import app.main.service.run_service as run_service
 import app.main.service.geo_service as geo_service
 from app.main.model.run_map import RunMap
+import app.main.service.run_map_service as run_map_service
 import random
 
 MAX_RUNS_TO_COLLECT = 60
@@ -14,6 +15,15 @@ def updateUser(userId):
     runs = collectNewRuns(userAuth)
     for run in runs:
         run_service.createNewRun(runs)
+
+    runMaps = run_map_service.getRunMapByUser(userId)
+    runMaps, newRunMaps = addRunsToRunMaps(runMaps, runs)
+
+    for runMap in runMaps:
+        run_map_service.addRunsToRunMap(runMap.id, runMap.userId, runMap.runs)
+
+    for runMap in newRunMaps:
+        run_map_service.createRunMapForUser(runMap)
 
 
 def collectNewRuns(userAuth, last_update=0):
