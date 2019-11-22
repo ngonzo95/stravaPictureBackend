@@ -36,7 +36,28 @@ def test_update_user_inserts_runs_into_db(test_client):
 
     assert len(dbResponse['Items']) == 10
 
-
+#
+# def test_update_user_only_inserts_runs_up_to_max_into_db(test_client):
+#     userAuth = generateUserAuth()
+#     runIds = []
+#     for i in range(40):
+#         id = random_utils.randint(0, 10000)
+#         run = buildRun(overridenValues={'id': str(id), 'userId': userAuth.id})
+#         runsForDbToDelete.append(run)
+#         runIds.append(id)
+#
+#     with requests_mock.Mocker() as m:
+#         strava_api.generate_mock_strava_api(runIds, 0, m)
+#         unit.MAX_RUNS_TO_COLLECT = 10
+#         unit.updateUser(userAuth.id)
+#
+#     dbResponse = run_service.runTable().query(
+#         KeyConditionExpression=Key('userId').eq(userAuth.id)
+#     )
+#
+#     assert len(dbResponse['Items']) == 30
+#
+#
 def generateUserAuth():
     userAuth = buildUserAuth()
     userAuthsForDbToDelete.append(userAuth)
@@ -54,6 +75,7 @@ def test_client():
     yield app.test_client()  # this is where the testing happens!
 
     # After
+    unit.MAX_RUNS_TO_COLLECT = 30
     exceptionsToRaise = []
     cleanupUserAuth(exceptionsToRaise)
     cleanUpRuns(exceptionsToRaise)
