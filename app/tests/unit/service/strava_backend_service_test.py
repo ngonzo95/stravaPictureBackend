@@ -16,7 +16,6 @@ def test_list_activities_passes_in_required_header_and_reqest():
         stravaUrl = 'https://www.strava.com/api/v3/athlete/activities'
         stravaUrlParmas = '?page=1&per_page=30'
         headers = {'Authorization': 'Bearer ' + userAuth.strava_auth_token}
-        # m.register_uri('POST', stravaUrl + stravaUrlParmas, text=json.dumps(strava_response))
         m.get(stravaUrl + stravaUrlParmas,
               text=json.dumps(strava_response), request_headers=headers)
 
@@ -34,7 +33,6 @@ def test_list_activities_from_specific_page():
         stravaUrl = 'https://www.strava.com/api/v3/athlete/activities'
         stravaUrlParmas = '?page=3&per_page=30'
         headers = {'Authorization': 'Bearer ' + userAuth.strava_auth_token}
-        # m.register_uri('POST', stravaUrl + stravaUrlParmas, text=json.dumps(strava_response))
         m.get(stravaUrl + stravaUrlParmas,
               text=json.dumps(strava_response), request_headers=headers)
 
