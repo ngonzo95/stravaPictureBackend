@@ -56,8 +56,8 @@ def test_update_user_inserts_runs_into_db(test_client):
 #     )
 #
 #     assert len(dbResponse['Items']) == 30
-#
-#
+
+
 def generateUserAuth():
     userAuth = buildUserAuth()
     userAuthsForDbToDelete.append(userAuth)
