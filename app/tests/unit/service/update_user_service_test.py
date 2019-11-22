@@ -36,7 +36,7 @@ def test_update_user_inserts_runs_into_db(test_client):
 
     assert len(dbResponse['Items']) == 10
 
-#
+# Test for page stoping but commented out to decrease load on db
 # def test_update_user_only_inserts_runs_up_to_max_into_db(test_client):
 #     userAuth = generateUserAuth()
 #     runIds = []
