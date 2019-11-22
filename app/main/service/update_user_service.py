@@ -5,10 +5,13 @@ import app.main.service.run_service as run_service
 
 MAX_RUNS_TO_COLLECT = 60
 
-
 def updateUser(userId):
     userAuth = user_auth_service.getUserAuthById(userId)
+    collectNewRuns(userAuth)
 
+
+
+def collectNewRuns(userAuth):
     # Loop through all of the pages until we run out of pages
     pageNum = 1
     activities = strava_backend.list_activities(userAuth, pageNum)
