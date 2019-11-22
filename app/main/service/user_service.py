@@ -25,6 +25,15 @@ def update_marker_list(id, markerlist):
                             ExpressionAttributeValues=attributeValues)
 
 
+def update_last_update(id, lastUpdate):
+    key = {'id': id}
+    updateExpression = "set last_update = :l"
+
+    attributeValues = {':l': lastUpdate}
+    userTable().update_item(Key=key, UpdateExpression=updateExpression,
+                            ExpressionAttributeValues=attributeValues)
+
+
 def userTable():
     tableName = current_app.config['TABLE_NAMES']['USER_TABLE']
     return dynamo.get_table(tableName)

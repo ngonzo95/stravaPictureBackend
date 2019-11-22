@@ -11,10 +11,12 @@ def list_activities(userAuth, pageNumber, lastUpdate=None):
     if lastUpdate:
         urlParams += "&after=" + str(lastUpdate)
 
+    print("Activity List called with page number: " + str(pageNumber))
     return requests.get(url + urlParams, headers=headers).json()
 
 
 def get_activity_by_id(userAuth, id):
     url = "https://www.strava.com/api/v3/activities/" + str(id)
     headers = {'Authorization': 'Bearer ' + userAuth.strava_auth_token}
+    print("Run lookup called with: " + str(id))
     return requests.get(url, headers=headers).json()

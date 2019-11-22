@@ -5,16 +5,22 @@ import app.main.service.run_service as run_service
 import app.main.service.geo_service as geo_service
 from app.main.model.run_map import RunMap
 import app.main.service.run_map_service as run_map_service
+import app.main.service.user_service as user_service
 import random
+import time
 
 MAX_RUNS_TO_COLLECT = 60
 
 
 def updateUser(userId):
     userAuth = user_auth_service.getUserAuthById(userId)
-    runs = collectNewRuns(userAuth)
+    user = user_service.getUserById(userId)
+    lastUpdate = user.last_update
+    currentTime = int(time.time())
+
+    runs = collectNewRuns(userAuth, last_update=lastUpdate)
     for run in runs:
-        run_service.createNewRun(runs)
+        run_service.createNewRun(run)
 
     runMaps = run_map_service.getRunMapByUser(userId)
     runMaps, newRunMaps = addRunsToRunMaps(runMaps, runs)
@@ -25,6 +31,7 @@ def updateUser(userId):
     for runMap in newRunMaps:
         run_map_service.createRunMapForUser(runMap)
 
+    user_service.update_last_update(userId, currentTime)
 
 def collectNewRuns(userAuth, last_update=0):
     # Loop through all of the pages until we run out of pages
