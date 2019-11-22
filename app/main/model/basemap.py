@@ -1,11 +1,15 @@
 import app.main.model.model_helper as model_helper
 from app.main.model.marker import Marker
+from decimal import Decimal
+
+ROUNDING_RESOLUTION = Decimal('.000000001')
 
 
 class Basemap():
     def __init__(self, *initial_data, **kwargs):
         self._availableKeys = ["center", "zoom", "markers"]
-        self.center = [39.8283, -98.5795]
+        self.center = [Decimal(39.8283).quantize(ROUNDING_RESOLUTION),
+                       Decimal(-98.5795).quantize(ROUNDING_RESOLUTION)]
         self.zoom = 3
         self.markers = []
 
