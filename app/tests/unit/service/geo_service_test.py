@@ -9,7 +9,7 @@ def test_distance_between_two_points():
     expectedDistance = Distance(146.44140729201737)
 
     difference = expectedDistance.km  - unit.calculate_distance(cord1, cord2).km
-    assert abs(difference) <= 0.0000
+    assert abs(difference) <= 0.00001
 
 
 def test_point_in_run_map_zone():
