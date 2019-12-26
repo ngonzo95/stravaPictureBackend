@@ -32,6 +32,10 @@ def setUserAuth(id, args):
     userAuthTable().put_item(Item=userAuth.generateDict())
 
 
+def checkUser(id):
+    dbResponse = userAuthTable().get_item(Key={'id': id})
+    return 'Item' in dbResponse
+
 def generateStravaAuthUrl(id):
     url = "http://www.strava.com/oauth/authorize?client_id=" \
         + current_app.config['STRAVA_CLIENT_KEY'] \

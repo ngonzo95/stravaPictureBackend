@@ -90,6 +90,27 @@ def test_exchange_token_with_bad_scope_returns_error(test_client):
         assert 'Item' not in dbRes
 
 
+def test_has_account_returns_false_when_user_isnt_in_our_system(test_client):
+    # arrange
+    user = generate_auth_user()
+
+    # act
+    response = test_client.get('/user/' + user.id + '/has_account')
+
+    # assert
+    assert response.status_code == 200
+    assert response.json['has_account']
+
+
+def test_has_account_returns_true_when_user_is_in_our_system(test_client):
+    # act
+    response = test_client.get('/user/' + str(4242) + '/has_account')
+
+    # assert
+    assert response.status_code == 200
+    assert not response.json['has_account']
+
+
 def generate_auth_user():
     user = buildUserAuth()
     usersAuthForDbToDelete.append(user)

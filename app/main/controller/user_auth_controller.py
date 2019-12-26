@@ -39,3 +39,13 @@ class SetStravaToken(Resource):
         else:
             raise Unauthorized("Please enable the activity read ability, the "
                                + "app wont work without it")
+
+
+@api.route('/<id>/has_account')
+@api.doc(params={'id': 'The users heatmap id'})
+class UserList(Resource):
+    @api.doc("Returns a single field has_account which is true if the user has"
+             + "an account associated with their id.")
+    def get(self, id):
+        """Returns if the user has an account"""
+        return {'has_account': user_auth_service.checkUser(id)}, 200
