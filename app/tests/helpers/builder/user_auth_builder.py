@@ -3,7 +3,7 @@ import random
 import string
 
 
-def buildUserAuth(*overridenValues):
+def buildUserAuth(overridenValues={}):
     data = {'id': randomString(10),
             'strava_athlete_id': randomString(12),
             'strava_username': randomString(6),
@@ -14,7 +14,7 @@ def buildUserAuth(*overridenValues):
     if not overridenValues:
         overridenValues = {}
 
-    for (key, value) in overridenValues:
+    for (key, value) in overridenValues.items():
         data[key] = value
 
     return UserAuth(data)

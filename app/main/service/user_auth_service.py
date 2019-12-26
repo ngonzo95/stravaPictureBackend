@@ -1,7 +1,9 @@
 from app.main import dynamo
 from app.main.model.user_auth import UserAuth
+import app.main.service.strava_backend_service as api
 from flask import current_app
 import requests
+import time
 
 
 def getAllUserAuths():
@@ -61,3 +63,31 @@ def _updateUserAuthWithStravaJson(userAuth, stravaAuthJson):
 def userAuthTable():
     tableName = current_app.config['TABLE_NAMES']['USER_AUTH_TABLE']
     return dynamo.get_table(tableName)
+
+
+def getUpdatedUserAuth(id):
+    userAuth = getUserAuthById(id)
+    if int(time.time()) > userAuth.strava_expiration_time:
+        _refreshAndSaveToken(userAuth)
+
+    return userAuth
+
+
+def _refreshAndSaveToken(userAuth):
+    updated_token = api.refresh_auth_token(userAuth)
+    userAuth.strava_refresh_token = updated_token['refresh_token']
+    userAuth.strava_auth_token = updated_token['access_token']
+    userAuth.strava_expiration_time = updated_token['expires_at']
+    _saveToken(userAuth)
+
+
+def _saveToken(userAuth):
+    key = {'id': userAuth.id}
+    updateExpression = "set strava_auth_token = :a, " \
+        + "strava_expiration_time = :e, strava_refresh_token = :r"
+    attributeValues = {':a': userAuth.strava_auth_token,
+                       ':e': userAuth.strava_expiration_time,
+                       ':r': userAuth.strava_refresh_token}
+
+    userAuthTable().update_item(Key=key, UpdateExpression=updateExpression,
+                                ExpressionAttributeValues=attributeValues)

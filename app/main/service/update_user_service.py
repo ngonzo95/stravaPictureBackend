@@ -13,7 +13,7 @@ MAX_RUNS_TO_COLLECT = 60
 
 
 def updateUser(userId):
-    userAuth = user_auth_service.getUserAuthById(userId)
+    userAuth = user_auth_service.getUpdatedUserAuth(userId)
     user = user_service.getUserById(userId)
     lastUpdate = user.last_update
     currentTime = int(time.time())
