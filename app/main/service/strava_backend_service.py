@@ -1,4 +1,5 @@
 import requests
+from flask import current_app
 
 ACTIVITIES_PER_PAGE = 30
 
@@ -20,3 +21,12 @@ def get_activity_by_id(userAuth, id):
     headers = {'Authorization': 'Bearer ' + userAuth.strava_auth_token}
     print("Run lookup called with: " + str(id))
     return requests.get(url, headers=headers).json()
+
+
+def refresh_auth_token(userAuth):
+    url = 'https://www.strava.com/api/v3/oauth/token'
+    data = {'client_id': current_app.config['STRAVA_CLIENT_KEY'],
+            'client_secret': current_app.config['STRAVA_CLIENT_SECRET_KEY'],
+            'grant_type': 'refresh_token',
+            'refresh_token': userAuth.strava_refresh_token}
+    return requests.post(url, data=data).json()
