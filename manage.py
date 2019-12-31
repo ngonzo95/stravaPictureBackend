@@ -7,6 +7,13 @@ app = create_app(os.getenv('STRAVA_BACKEND_ENV') or 'dev')
 app.register_blueprint(blueprint)
 app.app_context().push()
 
+
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    return response
+
+
 manager = Manager(app)
 
 
