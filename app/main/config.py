@@ -74,7 +74,7 @@ class ProductionConfig(Config):
     DEBUG = False
     TABLE_NAMES = generateTableNames('prod')
     DYNAMO_TABLES = initTable(TABLE_NAMES)
-    BASE_URL = "https://strava-heatmap.nicholas-gonzalez.com"
+    BASE_URL = "https://strava-heatmap.nicholas-gonzalez.com/"
 
 
 config_by_name = dict(
