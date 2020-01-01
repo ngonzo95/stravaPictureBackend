@@ -4,7 +4,7 @@ from flask import current_app
 from boto3.dynamodb.conditions import Key
 import app.main.service.user_service as user_service
 from app.main.model.marker import Marker
-MAX_RUNS = 30
+MAX_RUNS = 50
 
 
 def getRunMapByIdAndUserId(id, userId):
