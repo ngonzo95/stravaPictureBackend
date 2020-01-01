@@ -7,7 +7,8 @@ ROUNDING_RESOLUTION = Decimal('.000000001')
 def extract_ids_of_interest_from_activity_list(resJson):
     ids = []
     for activity in resJson:
-        if activity['type'] == 'Run' and (not activity['commute']):
+        if activity['type'] == 'Run' and (not activity['commute']) and \
+                activity['start_latlng'] is not None:
             ids.append(activity['id'])
 
     return ids

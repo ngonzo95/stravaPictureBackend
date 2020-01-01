@@ -11,7 +11,9 @@ def test_collect_ids_of_interest():
                generate_summary_activity("Run", False),
                generate_summary_activity("Bike", True),
                generate_summary_activity("Bike", False),
-               generate_summary_activity("Run", False)]
+               generate_summary_activity("Run", False),
+               generate_summary_activity("Run", False, hasGPS=False)
+               ]
 
     idsOfInterest = unit.extract_ids_of_interest_from_activity_list(resJson)
     assert sorted([resJson[1]['id'], resJson[4]['id']]) \

@@ -52,7 +52,7 @@ def generate_endpoint_for_activity(mock, id):
              )
 
 
-def generate_summary_activity(type, commuteFlag, id=random_utils.randint(0, 1000000)):
+def generate_summary_activity(type, commuteFlag, id=None, hasGPS=True):
     return {
         "resource_state": random_utils.randint(0, 5),
         "athlete": {
@@ -63,12 +63,12 @@ def generate_summary_activity(type, commuteFlag, id=random_utils.randint(0, 1000
         "distance": random_utils.randomDecimal(0, 100, 3),
         "type": type,
         "workout_type": random_utils.randomString(15),
-        "id": id,
+        "id": id if id else random_utils.randint(0, 1000000),
         "commute": commuteFlag,
         "external_id": random_utils.randomString(5),
         "utc_offset": random_utils.randint(-10000, 10000),
-        "start_latlng": random_utils.randomCord(),
-        "end_latlng": random_utils.randomCord(),
+        "start_latlng": random_utils.randomCord() if hasGPS else None,
+        "end_latlng": random_utils.randomCord() if hasGPS else None,
         "location_city": random_utils.randomString(6),
         "location_state": random_utils.randomString(6),
         "location_country": random_utils.randomString(4),
