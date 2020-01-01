@@ -9,7 +9,7 @@ import app.main.service.user_service as user_service
 import random
 import time
 
-MAX_RUNS_TO_COLLECT = 60
+MAX_RUNS_TO_COLLECT = 80
 
 
 def updateUser(userId):
