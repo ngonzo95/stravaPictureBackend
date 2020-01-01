@@ -46,7 +46,7 @@ provider:
 functions:
   app:
     handler: wsgi.handler
-    timeout: 1800
+    timeout: 900
     environment:
       STRAVA_CLIENT_SECRET_KEY: ${env:STRAVA_CLIENT_SECRET_KEY}
       STRAVA_BACKEND_ENV: prod
