@@ -96,7 +96,7 @@ def createRunMapFromRun(run):
 
     values = {
         'center': run.start,
-        'zoom': 7,
+        'zoom': 12,
         'userId': run.userId,
         'runs': [run.id],
         'id': city + str(random.randint(0, 1000)),

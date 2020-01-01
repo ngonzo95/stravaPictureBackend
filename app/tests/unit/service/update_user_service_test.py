@@ -47,7 +47,7 @@ def test_create_run_map_from_run_sets_name_needed_values():
     assert runMap == buildRunMap(overridenValues={'mapName': 'Minneapolis',
                                                   'runs': [run.id],
                                                   'center': run.start,
-                                                  'zoom': 7,
+                                                  'zoom': 12,
                                                   'userId': run.userId,
                                                   'id': runMap.id})
 
