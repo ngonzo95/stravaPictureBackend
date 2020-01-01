@@ -55,7 +55,7 @@ def test_add_run_maps_adds_runs_to_given_map(test_client):
 
 def test_add_runs_adds_runs_and_removes_runs_more_than_max():
     runs = []
-    for i in range(25):
+    for i in range(unit.MAX_RUNS - 5):
         runs.append(random_utils.randomString(10))
 
     runMap = generate_run_map({'runs': runs})
@@ -68,7 +68,7 @@ def test_add_runs_adds_runs_and_removes_runs_more_than_max():
 
     expectedRuns = []
     expectedRuns += runsToAdd
-    for i in range(20):
+    for i in range(unit.MAX_RUNS-10):
         expectedRuns.append(runs[i])
 
     assert expectedRuns == \
